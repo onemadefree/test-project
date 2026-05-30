@@ -25,17 +25,41 @@ AIGC:
 
 ### 本地运行
 
+**Linux/Mac:**
 ```bash
 pip install -r requirements.txt
 export MINIMAX_API_KEY=your_api_key
 uvicorn app.main:app --reload
 ```
 
+**Windows PowerShell:**
+```powershell
+pip install -r requirements.txt
+$env:MINIMAX_API_KEY="your_api_key"
+uvicorn app.main:app --reload
+```
+
+**Windows CMD:**
+```cmd
+pip install -r requirements.txt
+set MINIMAX_API_KEY=your_api_key
+uvicorn app.main:app --reload
+```
+
 ### Docker 运行
 
+**构建镜像：**
 ```bash
 docker build -t streaming-tts-api .
-docker run -p 8000:8000 -e MINIMAX_API_KEY=your_api_key streaming-tts-api
+```
+
+**运行服务：**
+```bash
+# Linux/Mac
+docker run -d -p 8000:8000 -e MINIMAX_API_KEY=your_api_key --name tts-api streaming-tts-api
+
+# Windows PowerShell
+docker run -d -p 8000:8000 -e MINIMAX_API_KEY=your_api_key --name tts-api streaming-tts-api
 ```
 
 ## API 接口
