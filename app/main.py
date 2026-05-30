@@ -124,7 +124,6 @@ async def list_voices():
     return {
         "voices": [
             {"id": "female-shaonv-jingpin", "name": "精选少女", "language": "中文"},
-            {"id": "male-qn-qingyang", "name": "清扬少年", "language": "中文"},
             {"id": "male-qn-qingse", "name": "青色青年", "language": "中文"},
             {"id": "female-tianmei", "name": "甜美女孩", "language": "中文"},
             {"id": "female-yuanjun", "name": "温柔御姐", "language": "中文"},
