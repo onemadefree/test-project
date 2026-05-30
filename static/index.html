@@ -183,42 +183,10 @@
 
         <div class="form-group">
             <label for="voice">选择音色</label>
-            <select id="voice">
-                <optgroup label="v1 精选音色（推荐）">
-                    <option value="female-shaonv-jingpin" selected>少女-精选</option>
-                    <option value="male-qn-qingse-jingpin">青涩青年-精选</option>
-                    <option value="male-qn-jingying-jingpin">精英青年-精选</option>
-                    <option value="male-qn-badao-jingpin">霸道青年-精选</option>
-                    <option value="female-yujie-jingpin">御姐-精选</option>
-                    <option value="female-chengshu-jingpin">成熟女性-精选</option>
-                    <option value="female-tianmei-jingpin">甜美女性-精选</option>
-                    <option value="male-qn-daxuesheng-jingpin">青年大学生-精选</option>
-                </optgroup>
-                <optgroup label="v1 基础音色">
-                    <option value="female-shaonv">少女</option>
-                    <option value="male-qn-qingse">青涩青年</option>
-                    <option value="male-qn-jingying">精英青年</option>
-                    <option value="male-qn-badao">霸道青年</option>
-                    <option value="female-yujie">御姐</option>
-                    <option value="female-chengshu">成熟女性</option>
-                    <option value="female-tianmei">甜美女性</option>
-                    <option value="male-qn-daxuesheng">青年大学生</option>
-                </optgroup>
-                <optgroup label="v2 音色">
-                    <option value="badao_shaoye">霸道少爷</option>
-                    <option value="tianxin_xiaoling">甜心小玲</option>
-                    <option value="wumei_yujie">妩媚御姐</option>
-                    <option value="clever_boy">聪明男童</option>
-                    <option value="cute_boy">可爱男童</option>
-                    <option value="lovely_girl">萌萌女童</option>
-                </optgroup>
-                <optgroup label="英文音色">
-                    <option value="English_expressive_narrator">英文 Narrator</option>
-                    <option value="Sweet_Girl">Sweet Girl</option>
-                    <option value="Charming_Santa">Charming Santa</option>
-                </optgroup>
+            <input type="text" id="voiceSearch" placeholder="搜索音色..." oninput="filterVoices()" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 4px;">
+            <select id="voice" size="10" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: white;">
             </select>
-            <div class="voice-info">当前支持中文、英文、日文、韩文等多种音色（精选音色音质更佳）</div>
+            <div class="voice-info" id="voiceInfo">加载中...</div>
         </div>
 
         <div class="form-group">
@@ -278,10 +246,77 @@
         const audioContainer = document.getElementById('audioContainer');
         const audioPlayer = document.getElementById('audioPlayer');
         const errorDiv = document.getElementById('error');
+        const voiceSelect = document.getElementById('voice');
+        const voiceInfo = document.getElementById('voiceInfo');
+
+        let allVoices = [];
+
+        // 页面加载时获取音色列表
+        async function loadVoices() {
+            try {
+                const response = await fetch('/voices');
+                const data = await response.json();
+                allVoices = data.voices || [];
+                renderVoices(allVoices);
+                voiceInfo.textContent = `共 ${allVoices.length} 个可用音色`;
+            } catch (err) {
+                voiceInfo.textContent = '音色加载失败，使用默认音色';
+            }
+        }
+
+        // 渲染音色列表
+        function renderVoices(voices) {
+            voiceSelect.innerHTML = '';
+            voices.forEach(v => {
+                const option = document.createElement('option');
+                option.value = v.id;
+                option.textContent = `${v.name} (${v.language})`;
+                option.dataset.name = v.name;
+                option.dataset.language = v.language;
+                option.dataset.description = v.description || '';
+                voiceSelect.appendChild(option);
+            });
+
+            // 选中第一个
+            if (voiceSelect.options.length > 0) {
+                voiceSelect.selectedIndex = 0;
+                updateVoiceInfo();
+            }
+        }
+
+        // 更新音色信息显示
+        function updateVoiceInfo() {
+            const selected = voiceSelect.options[voiceSelect.selectedIndex];
+            if (selected) {
+                const desc = selected.dataset.description;
+                voiceInfo.textContent = desc ? desc : selected.dataset.language;
+            }
+        }
+
+        // 搜索过滤音色
+        function filterVoices() {
+            const searchText = document.getElementById('voiceSearch').value.toLowerCase();
+            if (!searchText) {
+                renderVoices(allVoices);
+                return;
+            }
+            const filtered = allVoices.filter(v =>
+                v.name.toLowerCase().includes(searchText) ||
+                v.id.toLowerCase().includes(searchText) ||
+                v.language.toLowerCase().includes(searchText)
+            );
+            renderVoices(filtered);
+        }
+
+        // 音色选择变化时显示详情
+        voiceSelect.addEventListener('change', updateVoiceInfo);
 
         speedInput.addEventListener('input', () => speedValue.textContent = speedInput.value + 'x');
         volumeInput.addEventListener('input', () => volumeValue.textContent = volumeInput.value);
         pitchInput.addEventListener('input', () => pitchValue.textContent = pitchInput.value);
+
+        // 页面加载时获取音色
+        loadVoices();
 
         async function generateAudio() {
             const text = document.getElementById('text').value.trim();
