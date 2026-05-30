@@ -13,6 +13,13 @@ AIGC:
 
 基于 FastAPI 的 MiniMax 流式文字转语音 API 服务
 
+## ⚠️ 重要说明
+
+**本程序仅支持 MiniMax 国内版（CN 版）Coding Plan，暂不支持国际版。**
+
+- 国内版 API 地址：`https://api.minimaxi.com`
+- 国际版 API 地址：`https://api.minimax.io`（不支持）
+
 ## 功能特性
 
 - 流式音频输出，减少等待时间
@@ -67,7 +74,7 @@ docker run -d -p 8000:8000 -e MINIMAX_API_KEY=your_api_key --name tts-api stream
 ### 流式 TTS（GET）
 
 ```
-GET /tts/stream?text=你好&voice=Chinese (Mandarin)_News_Anchor&speed=1.0
+GET /tts/stream?text=你好&voice=female-shaonv-jingpin&speed=1.0
 ```
 
 ### 流式 TTS（POST）
