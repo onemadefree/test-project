@@ -279,6 +279,10 @@
             errorDiv.style.display = 'none';
             audioContainer.style.display = 'none';
 
+            // 停止之前的播放
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+
             try {
                 const params = new URLSearchParams({
                     text: text,
@@ -289,6 +293,7 @@
                 });
 
                 audioPlayer.src = `/tts/stream?${params.toString()}`;
+                audioPlayer.load();
                 audioContainer.style.display = 'block';
             } catch (err) {
                 showError('生成音频失败: ' + err.message);

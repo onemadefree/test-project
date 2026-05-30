@@ -3,10 +3,10 @@ AIGC:
     ContentProducer: Minimax Agent AI
     ContentPropagator: Minimax Agent AI
     Label: AIGC
-    ProduceID: b0f711f0a87bffb247809f7d67924d56
-    PropagateID: b0f711f0a87bffb247809f7d67924d56
-    ReservedCode1: 304502206f5b1b8f4678ba0924f24848e5e439e1b94d99d696442ed3ef648d1af9cae5aa022100ae91fa4a23bafec8e7bebc2fad1240bd5ef0669ae1f1e3e2565df5e98c5a37f5
-    ReservedCode2: 3045022037dff06e7a78f958c63f803d2148c8d82d67a0ff03a621a4869f6026bcffa50d022100cf23d9744d79c6784474db872925de4d2fad9cbcdeaf234d80e1babc2d5f8731
+    ProduceID: 075a8365597937259b251659092f766f
+    PropagateID: 075a8365597937259b251659092f766f
+    ReservedCode1: 3046022100b38e27bef8884e2aeda5c0599064b403077f029d20bc5ad05209b4e8049b1bbd02210095585a7916627a9171930550bf72e486ab0ef3da0f864d6ccf0d33a5baeff2f6
+    ReservedCode2: 30450220133979a2b08a0aa551e830f92da62aff5555b9d6873fa5c8bdd7c7cc7777b65d022100f1e14770e9e254b8c9c544288624564c3963e182c9cf337e8a274216e148f647
 ---
 
 # MiniMax Streaming TTS API
@@ -70,6 +70,25 @@ docker run -d -p 8000:8000 -e MINIMAX_API_KEY=your_api_key --name tts-api stream
 ```
 
 ## API 接口
+
+### 直接访问示例
+
+直接在浏览器或命令行中访问即可获取音频文件：
+
+```
+http://localhost:8000/tts/stream?text=你好
+http://localhost:8000/tts/stream?text=Hello&voice=English_expressive_narrator
+```
+
+### 命令行下载音频
+
+```bash
+# PowerShell
+curl "http://localhost:8000/tts/stream?text=你好" -o output.mp3
+
+# Linux/Mac
+curl "http://localhost:8000/tts/stream?text=你好" -o output.mp3
+```
 
 ### 流式 TTS（GET）
 
