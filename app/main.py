@@ -37,8 +37,14 @@ def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
     """
     api_key = os.getenv("MINIMAX_API_KEY", "YOUR_API_KEY")
 
+    # 处理 API Key 前缀
+    if api_key.startswith("sk-cp-"):
+        actual_key = api_key
+    else:
+        actual_key = f"sk-cp-{api_key}"
+
     headers = {
-        "Authorization": f"Bearer sk-cp-{api_key}",
+        "Authorization": f"Bearer {actual_key}",
         "Content-Type": "application/json"
     }
 
