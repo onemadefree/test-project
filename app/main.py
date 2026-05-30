@@ -95,7 +95,18 @@ def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
                     continue
 
         if not full_audio:
-            raise HTTPException(status_code=500, detail="No audio data received")
+            # 获取详细的错误信息
+            error_detail = "No audio data received"
+            for line in response.text.split('\n'):
+                line = line.strip()
+                if line.startswith("data: ") and '"status_code"' in line:
+                    try:
+                        data_obj = json.loads(line[6:])
+                        if data_obj.get("base_resp"):
+                            error_detail = f"API Error {data_obj['base_resp'].get('status_code')}: {data_obj['base_resp'].get('status_msg', 'Unknown')}"
+                    except:
+                        pass
+            raise HTTPException(status_code=500, detail=error_detail)
 
         return full_audio
 
