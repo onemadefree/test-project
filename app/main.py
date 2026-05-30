@@ -82,7 +82,8 @@ def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
             )
 
         # 解析 SSE 格式的响应
-        full_audio = b""
+        # 只保留最后一个包含实际音频数据的块，避免重复播放
+        last_audio_chunk = b""
         for line in response.text.split('\n'):
             line = line.strip()
             if line.startswith("data: "):
@@ -96,11 +97,11 @@ def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
                             if hex_data:
                                 audio_bytes = binascii.unhexlify(hex_data)
                                 if audio_bytes:
-                                    full_audio += audio_bytes
+                                    last_audio_chunk = audio_bytes
                 except (json.JSONDecodeError, ValueError, TypeError):
                     continue
 
-        if not full_audio:
+        if not last_audio_chunk:
             # 获取详细的错误信息
             error_detail = "No audio data received"
             for line in response.text.split('\n'):
@@ -114,7 +115,7 @@ def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
                         pass
             raise HTTPException(status_code=500, detail=error_detail)
 
-        return full_audio
+        return last_audio_chunk
 
 
 @app.get("/")
