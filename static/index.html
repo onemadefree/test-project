@@ -184,15 +184,14 @@
         <div class="form-group">
             <label for="voice">选择音色</label>
             <select id="voice">
-                <option value="Chinese (Mandarin)_News_Anchor">中文 - 新闻主播</option>
-                <option value="Chinese (Mandarin)_Gentleman">中文 - 绅士</option>
-                <option value="Chinese (Mandarin)_Sweet_Lady">中文 - 甜美女士</option>
-                <option value="Chinese (Mandarin)_Warm_Girl">中文 - 温暖女孩</option>
-                <option value="Chinese (Mandarin)_Warm_Bestie">中文 - 温暖闺蜜</option>
-                <option value="English_expressive_narrator">英文 - 表情丰富 narrator</option>
-                <option value="English_radiant_girl">英文 - 阳光女孩</option>
-                <option value="Japanese_CalmLady">日文 - 冷静女士</option>
-                <option value="Korean_CalmGentleman">韩文 - 冷静绅士</option>
+                <option value="female-shaonv-jingpin" selected>精选少女</option>
+                <option value="male-qn-qingyang">清扬少年</option>
+                <option value="male-qn-qingse">青色青年</option>
+                <option value="female-tianmei">甜美女孩</option>
+                <option value="female-yuanjun">温柔御姐</option>
+                <option value="male-bada">霸道总裁</option>
+                <option value="male-yunyang">磁性云扬</option>
+                <option value="English_expressive_narrator">英文 Narrator</option>
             </select>
             <div class="voice-info">当前支持中文、英文、日文、韩文等多种音色</div>
         </div>
@@ -238,7 +237,7 @@
         <div class="api-example">
             <strong>API 调用示例：</strong><br><br>
             <code>POST /tts/stream</code><br>
-            <code>GET /tts/stream?text=你好&voice=Chinese (Mandarin)_News_Anchor&speed=1.0</code>
+            <code>GET /tts/stream?text=你好&voice=female-shaonv-jingpin&speed=1.0</code>
         </div>
     </div>
 

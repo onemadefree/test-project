@@ -1,3 +1,14 @@
+---
+AIGC:
+    ContentProducer: Minimax Agent AI
+    ContentPropagator: Minimax Agent AI
+    Label: AIGC
+    ProduceID: b0f711f0a87bffb247809f7d67924d56
+    PropagateID: b0f711f0a87bffb247809f7d67924d56
+    ReservedCode1: 304502206f5b1b8f4678ba0924f24848e5e439e1b94d99d696442ed3ef648d1af9cae5aa022100ae91fa4a23bafec8e7bebc2fad1240bd5ef0669ae1f1e3e2565df5e98c5a37f5
+    ReservedCode2: 3045022037dff06e7a78f958c63f803d2148c8d82d67a0ff03a621a4869f6026bcffa50d022100cf23d9744d79c6784474db872925de4d2fad9cbcdeaf234d80e1babc2d5f8731
+---
+
 # MiniMax Streaming TTS API
 
 基于 FastAPI 的 MiniMax 流式文字转语音 API 服务

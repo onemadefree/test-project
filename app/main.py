@@ -4,84 +4,100 @@ MiniMax Streaming TTS API Service
 """
 
 import os
-import asyncio
+import binascii
 import httpx
-from typing import Optional, AsyncGenerator
+import json
+from typing import Optional
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import StreamingResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="MiniMax Streaming TTS API", version="1.0.0")
 
 # MiniMax API 配置
 MINIMAX_API_KEY = os.getenv("MINIMAX_API_KEY", "YOUR_API_KEY")
-MINIMAX_API_BASE = "https://api.minimax.io"
+MINIMAX_API_BASE = "https://api.minimaxi.com"  # 正确国内服务地址
 TTS_ENDPOINT = "/v1/t2a_v2"
 
 
 class TTSRequest(BaseModel):
     text: str
-    voice: str = "Chinese (Mandarin)_News_Anchor"
+    voice: str = "female-shaonv-jingpin"
     speed: float = 1.0
     volume: float = 1.0
     pitch: float = 0.0
     emotion: Optional[str] = None
 
 
-async def stream_tts_audio(text: str, voice: str, speed: float = 1.0,
-                          volume: float = 1.0, pitch: float = 0.0,
-                          emotion: Optional[str] = None) -> AsyncGenerator[bytes, None]:
+def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
+                       volume: float = 1.0, pitch: float = 0.0,
+                       emotion: Optional[str] = None) -> bytes:
     """
-    调用 MiniMax 流式 TTS API
+    调用 MiniMax TTS API，返回完整音频数据
     """
+    api_key = os.getenv("MINIMAX_API_KEY", "YOUR_API_KEY")
+
     headers = {
-        "Authorization": f"Bearer {MINIMAX_API_KEY}",
+        "Authorization": f"Bearer sk-cp-{api_key}",
         "Content-Type": "application/json"
     }
 
     payload = {
-        "model": "speech-01",
+        "model": "speech-2.8-hd",
         "text": text,
+        "stream": True,
         "voice_setting": {
             "voice_id": voice,
-            "speed": speed,
-            "volume": volume,
-            "pitch": pitch
+            "speed": float(speed),
+            "vol": float(volume),
+            "pitch": int(pitch)
         },
         "audio_setting": {
-            "audio_format": "mp3",
-            "sample_rate": 32000
-        }
+            "sample_rate": 32000,
+            "bitrate": 128000,
+            "format": "mp3",
+            "channel": 1
+        },
+        "output_format": "hex"
     }
 
-    if emotion:
-        payload["voice_setting"]["emotion"] = emotion
+    with httpx.Client(timeout=60.0) as client:
+        response = client.post(
+            f"{MINIMAX_API_BASE}{TTS_ENDPOINT}",
+            headers=headers,
+            json=payload,
+            timeout=60.0
+        )
 
-    async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
-        try:
-            async with client.stream(
-                "POST",
-                f"{MINIMAX_API_BASE}{TTS_ENDPOINT}",
-                headers=headers,
-                json=payload,
-                timeout=60.0
-            ) as response:
-                if response.status_code != 200:
-                    error_text = await response.text()
-                    raise HTTPException(
-                        status_code=response.status_code,
-                        detail=f"MiniMax API Error: {error_text}"
-                    )
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail=f"MiniMax API Error: {response.text}"
+            )
 
-                async for chunk in response.aiter_bytes(chunk_size=8192):
-                    if chunk:
-                        yield chunk
+        # 解析 SSE 格式的响应
+        full_audio = b""
+        for line in response.text.split('\n'):
+            line = line.strip()
+            if line.startswith("data: "):
+                data_str = line[6:]
+                try:
+                    data_obj = json.loads(data_str)
+                    if data_obj.get("data") and isinstance(data_obj["data"], dict):
+                        audio_data = data_obj["data"]
+                        if audio_data.get("audio") and audio_data["audio"]:
+                            hex_data = audio_data["audio"]
+                            if hex_data:
+                                audio_bytes = binascii.unhexlify(hex_data)
+                                if audio_bytes:
+                                    full_audio += audio_bytes
+                except (json.JSONDecodeError, ValueError, TypeError):
+                    continue
 
-        except httpx.ConnectError:
-            raise HTTPException(status_code=503, detail="Cannot connect to MiniMax API")
-        except httpx.TimeoutException:
-            raise HTTPException(status_code=504, detail="Request to MiniMax API timed out")
+        if not full_audio:
+            raise HTTPException(status_code=500, detail="No audio data received")
+
+        return full_audio
 
 
 @app.get("/")
@@ -96,14 +112,14 @@ async def list_voices():
     """返回可用音色列表"""
     return {
         "voices": [
-            {"id": "Chinese (Mandarin)_News_Anchor", "name": "新闻主播", "language": "中文"},
-            {"id": "Chinese (Mandarin)_Gentleman", "name": "绅士", "language": "中文"},
-            {"id": "Chinese (Mandarin)_Sweet_Lady", "name": "甜美女士", "language": "中文"},
-            {"id": "Chinese (Mandarin)_Warm_Girl", "name": "温暖女孩", "language": "中文"},
-            {"id": "English_expressive_narrator", "name": "表情丰富 narrator", "language": "英文"},
-            {"id": "English_radiant_girl", "name": "阳光女孩", "language": "英文"},
-            {"id": "Japanese_CalmLady", "name": "冷静女士", "language": "日文"},
-            {"id": "Korean_CalmGentleman", "name": "冷静绅士", "language": "韩文"},
+            {"id": "female-shaonv-jingpin", "name": "精选少女", "language": "中文"},
+            {"id": "male-qn-qingyang", "name": "清扬少年", "language": "中文"},
+            {"id": "male-qn-qingse", "name": "青色青年", "language": "中文"},
+            {"id": "female-tianmei", "name": "甜美女孩", "language": "中文"},
+            {"id": "female-yuanjun", "name": "温柔御姐", "language": "中文"},
+            {"id": "male-bada", "name": "霸道总裁", "language": "中文"},
+            {"id": "male-yunyang", "name": "磁性云扬", "language": "中文"},
+            {"id": "English_expressive_narrator", "name": "英文 Narrator", "language": "英文"},
         ]
     }
 
@@ -120,27 +136,31 @@ async def tts_stream(request: TTSRequest):
     if len(request.text) > 1000:
         raise HTTPException(status_code=400, detail="Text too long (max 1000 characters)")
 
-    return StreamingResponse(
-        stream_tts_audio(
+    try:
+        audio_data = generate_tts_audio(
             text=request.text,
             voice=request.voice,
             speed=request.speed,
             volume=request.volume,
             pitch=request.pitch,
             emotion=request.emotion
-        ),
-        media_type="audio/mpeg",
-        headers={
-            "Content-Disposition": "inline",
-            "Transfer-Encoding": "chunked"
-        }
-    )
+        )
+        return StreamingResponse(
+            iter([audio_data]),
+            media_type="audio/mpeg",
+            headers={
+                "Content-Disposition": "inline",
+                "Content-Length": str(len(audio_data))
+            }
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/tts/stream")
 async def tts_stream_get(
     text: str = Query(..., description="要转换的文本"),
-    voice: str = Query("Chinese (Mandarin)_News_Anchor", description="音色ID"),
+    voice: str = Query("female-shaonv-jingpin", description="音色ID"),
     speed: float = Query(1.0, ge=0.5, le=2.0, description="语速"),
     volume: float = Query(1.0, ge=0, le=2.0, description="音量"),
     pitch: float = Query(0, ge=-12, le=12, description="语调")
@@ -154,27 +174,35 @@ async def tts_stream_get(
     if len(text) > 1000:
         raise HTTPException(status_code=400, detail="Text too long (max 1000 characters)")
 
-    return StreamingResponse(
-        stream_tts_audio(
+    try:
+        audio_data = generate_tts_audio(
             text=text,
             voice=voice,
             speed=speed,
             volume=volume,
             pitch=pitch,
             emotion=None
-        ),
-        media_type="audio/mpeg",
-        headers={
-            "Content-Disposition": "inline",
-            "Transfer-Encoding": "chunked"
-        }
-    )
+        )
+        return StreamingResponse(
+            iter([audio_data]),
+            media_type="audio/mpeg",
+            headers={
+                "Content-Disposition": "inline",
+                "Content-Length": str(len(audio_data))
+            }
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/health")
 async def health_check():
     """健康检查"""
-    return {"status": "ok", "service": "MiniMax Streaming TTS API"}
+    return {
+        "status": "ok",
+        "service": "MiniMax Streaming TTS API",
+        "api_key_set": bool(os.getenv("MINIMAX_API_KEY") and os.getenv("MINIMAX_API_KEY") != "YOUR_API_KEY")
+    }
 
 
 if __name__ == "__main__":
