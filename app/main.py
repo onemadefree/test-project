@@ -21,6 +21,7 @@ TTS_ENDPOINT = "/v1/t2a_v2"
 
 # 音色配置路径
 VOICES_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "config", "voices.json")
+SOUND_TAGS_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "config", "sound_tags.json")
 
 
 def load_voices():
@@ -33,6 +34,17 @@ def load_voices():
     except Exception as e:
         print(f"Warning: Failed to load voices config: {e}")
         return []
+
+
+def load_sound_tags():
+    """从配置文件加载语气词标签"""
+    config_path = os.path.join(os.path.dirname(__file__), "..", "config", "sound_tags.json")
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Warning: Failed to load sound tags config: {e}")
+        return {"pause_tag": {}, "sound_effects": []}
 
 
 class TTSRequest(BaseModel):
@@ -189,6 +201,24 @@ async def list_voices():
         })
 
     return {"voices": formatted_voices, "total": len(formatted_voices)}
+
+
+@app.get("/model-features")
+async def get_model_features():
+    """返回模型特性配置（哪些参数只在特定模型下生效）"""
+    import json
+    config_path = os.path.join(os.path.dirname(__file__), "..", "config", "model_features.json")
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Warning: Failed to load model features config: {e}")
+        return {"models": {}, "emotions": {}, "model_comparison": {}}
+
+@app.get("/sound-tags")
+async def get_sound_tags():
+    """返回语气词标签配置（从配置文件加载）"""
+    return load_sound_tags()
 
 
 @app.post("/tts/stream")

@@ -1,0 +1,165 @@
+{
+  "models": {
+    "speech-2.8-hd": {
+      "name": "Speech 2.8 HD",
+      "name_zh": "Speech 2.8 HD",
+      "description": "最新旗舰音质",
+      "tier": "latest",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral", "lively"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000, 44100],
+        "bitrates": [32000, 64000, 128000, 192000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-2.8-turbo": {
+      "name": "Speech 2.8 Turbo",
+      "name_zh": "Speech 2.8 Turbo",
+      "description": "最新低时延",
+      "tier": "latest",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral", "lively"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000, 44100],
+        "bitrates": [32000, 64000, 128000, 192000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-2.6-hd": {
+      "name": "Speech 2.6 HD",
+      "name_zh": "Speech 2.6 HD",
+      "description": "极致音质与韵律",
+      "tier": "recommended",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral", "lively", "whisper"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000, 44100],
+        "bitrates": [32000, 64000, 128000, 192000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-2.6-turbo": {
+      "name": "Speech 2.6 Turbo",
+      "name_zh": "Speech 2.6 Turbo",
+      "description": "超低时延",
+      "tier": "fast",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral", "lively", "whisper"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000, 44100],
+        "bitrates": [32000, 64000, 128000, 192000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-02-hd": {
+      "name": "Speech 02 HD",
+      "name_zh": "Speech 02 HD",
+      "description": "稳定性好",
+      "tier": "stable",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000],
+        "bitrates": [32000, 64000, 128000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-02-turbo": {
+      "name": "Speech 02 Turbo",
+      "name_zh": "Speech 02 Turbo",
+      "description": "性能出色",
+      "tier": "fast",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000],
+        "bitrates": [32000, 64000, 128000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-01-hd": {
+      "name": "Speech 01 HD",
+      "name_zh": "Speech 01 HD",
+      "description": "经典版本",
+      "tier": "classic",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000],
+        "bitrates": [32000, 64000, 128000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    },
+    "speech-01-turbo": {
+      "name": "Speech 01 Turbo",
+      "name_zh": "Speech 01 Turbo",
+      "description": "经典快速版",
+      "tier": "classic",
+      "features": {
+        "emotions": ["auto", "happy", "sad", "angry", "fear", "disgust", "surprise", "neutral"],
+        "sound_tags": true,
+        "latex": true,
+        "subtitle": true
+      },
+      "audio_options": {
+        "sample_rates": [16000, 24000, 32000],
+        "bitrates": [32000, 64000, 128000],
+        "formats": ["mp3", "wav", "pcm"]
+      }
+    }
+  },
+  "emotions": {
+    "auto": {"name": "自动", "emoji": "🤖", "models": ["all"]},
+    "happy": {"name": "开心", "emoji": "😊", "models": ["all"]},
+    "sad": {"name": "悲伤", "emoji": "😢", "models": ["all"]},
+    "angry": {"name": "愤怒", "emoji": "😠", "models": ["all"]},
+    "fear": {"name": "恐惧", "emoji": "😨", "models": ["all"]},
+    "disgust": {"name": "厌恶", "emoji": "🤢", "models": ["all"]},
+    "surprise": {"name": "惊讶", "emoji": "😲", "models": ["all"]},
+    "neutral": {"name": "中性", "emoji": "😐", "models": ["all"]},
+    "lively": {"name": "生动", "emoji": "🎭", "models": ["speech-2.6-hd", "speech-2.6-turbo", "speech-2.8-hd", "speech-2.8-turbo"], "description": "仅对 Speech 2.6 和 2.8 系列模型生效"},
+    "whisper": {"name": "低语", "emoji": "🤫", "models": ["speech-2.6-hd", "speech-2.6-turbo"], "description": "仅对 Speech 2.6 系列模型生效"}
+  },
+  "model_comparison": {
+    "summary": "模型参数对比表",
+    "features": [
+      {"name": "基础情绪 (8种)", "description": "自动/开心/悲伤/愤怒/恐惧/厌恶/惊讶/中性", "models": {"all": true}},
+      {"name": "生动情绪", "description": "仅 2.6/2.8 系列支持", "models": {"speech-2.6-hd": true, "speech-2.6-turbo": true, "speech-2.8-hd": true, "speech-2.8-turbo": true}},
+      {"name": "低语情绪", "description": "仅 2.6 系列支持", "models": {"speech-2.6-hd": true, "speech-2.6-turbo": true}},
+      {"name": "语气标签", "description": "19种语气效果", "models": {"all": true}},
+      {"name": "LaTeX公式", "description": "支持数学公式朗读", "models": {"all": true}},
+      {"name": "字幕生成", "description": "生成同步字幕", "models": {"all": true}},
+      {"name": "44100Hz采样率", "description": "高清音质", "models": {"speech-2.6-hd": true, "speech-2.6-turbo": true, "speech-2.8-hd": true, "speech-2.8-turbo": true}},
+      {"name": "192kbps比特率", "description": "最高音质", "models": {"speech-2.6-hd": true, "speech-2.6-turbo": true, "speech-2.8-hd": true, "speech-2.8-turbo": true}}
+    ]
+  }
+}

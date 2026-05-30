@@ -1,0 +1,127 @@
+{
+  "pause_tag": {
+    "format": "<#{seconds}#>",
+    "description": "停顿控制标签，用于标记停顿时长（秒）",
+    "example": "你好 <#0.5#> 世界",
+    "default_seconds": 0.5,
+    "min_seconds": 0.1,
+    "max_seconds": 10,
+    "step": 0.1
+  },
+  "sound_effects": [
+    {
+      "id": "laughs",
+      "display": "笑声",
+      "tag": "(laughs)",
+      "description": "笑声"
+    },
+    {
+      "id": "chuckle",
+      "display": "轻笑",
+      "tag": "(chuckle)",
+      "description": "轻声笑"
+    },
+    {
+      "id": "coughs",
+      "display": "咳嗽",
+      "tag": "(coughs)",
+      "description": "咳嗽声"
+    },
+    {
+      "id": "clear-throat",
+      "display": "清嗓子",
+      "tag": "(clear-throat)",
+      "description": "清嗓子"
+    },
+    {
+      "id": "groans",
+      "display": "呻吟",
+      "tag": "(groans)",
+      "description": "呻吟声"
+    },
+    {
+      "id": "breath",
+      "display": "换气",
+      "tag": "(breath)",
+      "description": "呼吸/换气"
+    },
+    {
+      "id": "pant",
+      "display": "喘气",
+      "tag": "(pant)",
+      "description": "喘息"
+    },
+    {
+      "id": "inhale",
+      "display": "吸气",
+      "tag": "(inhale)",
+      "description": "吸气"
+    },
+    {
+      "id": "exhale",
+      "display": "呼气",
+      "tag": "(exhale)",
+      "description": "呼气"
+    },
+    {
+      "id": "gasps",
+      "display": "倒吸气",
+      "tag": "(gasps)",
+      "description": "倒吸气/喘息"
+    },
+    {
+      "id": "sniffs",
+      "display": "吸鼻子",
+      "tag": "(sniffs)",
+      "description": "吸鼻子"
+    },
+    {
+      "id": "sighs",
+      "display": "叹气",
+      "tag": "(sighs)",
+      "description": "叹气"
+    },
+    {
+      "id": "snorts",
+      "display": "喷鼻息",
+      "tag": "(snorts)",
+      "description": "喷鼻息"
+    },
+    {
+      "id": "burps",
+      "display": "打嗝",
+      "tag": "(burps)",
+      "description": "打嗝"
+    },
+    {
+      "id": "lip-smacking",
+      "display": "咂嘴",
+      "tag": "(lip-smacking)",
+      "description": "咂嘴"
+    },
+    {
+      "id": "humming",
+      "display": "哼唱",
+      "tag": "(humming)",
+      "description": "哼唱"
+    },
+    {
+      "id": "hissing",
+      "display": "嘶嘶声",
+      "tag": "(hissing)",
+      "description": "嘶嘶声"
+    },
+    {
+      "id": "emm",
+      "display": "嗯",
+      "tag": "(emm)",
+      "description": "嗯嗯声"
+    },
+    {
+      "id": "sneezes",
+      "display": "喷嚏",
+      "tag": "(sneezes)",
+      "description": "喷嚏"
+    }
+  ]
+}

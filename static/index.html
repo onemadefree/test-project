@@ -166,6 +166,7 @@
             transform: translateY(-1px);
         }
 
+        /* Form Elements */
         .form-group {
             margin-bottom: 20px;
         }
@@ -176,7 +177,11 @@
             font-weight: 500;
             font-size: 14px;
         }
-        select, input[type="range"] {
+        .form-group label .sub-label {
+            color: #666;
+            font-weight: 400;
+        }
+        select, input[type="text"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #3d3d3d;
@@ -218,6 +223,95 @@
             color: #667eea;
             font-size: 14px;
         }
+
+        /* Section Header */
+        .section-header {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3d3d3d;
+        }
+
+        /* Grid Layout for Parameters */
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        /* Voice Select Container */
+        .voice-select-container {
+            display: flex;
+            gap: 10px;
+        }
+        .voice-select-container select {
+            flex: 1;
+        }
+        .voice-info {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Emotion Chips */
+        .emotion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .emotion-chip {
+            padding: 6px 12px;
+            background: #3d3d3d;
+            color: #ccc;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .emotion-chip:hover {
+            background: #5d5d5d;
+            color: #fff;
+        }
+        .emotion-chip.active {
+            background: #667eea;
+            color: #fff;
+        }
+        .emotion-chip.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .emotion-warning {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        /* Buttons */
         .btn {
             width: 100%;
             padding: 14px;
@@ -239,6 +333,8 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        /* Loading Spinner */
         .loading {
             display: none;
             text-align: center;
@@ -257,6 +353,8 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Error Message */
         .error {
             display: none;
             background: rgba(220, 53, 69, 0.1);
@@ -267,6 +365,8 @@
             margin-top: 15px;
             font-size: 14px;
         }
+
+        /* Audio Container */
         .audio-container {
             display: none;
             margin-top: 20px;
@@ -284,6 +384,8 @@
             width: 100%;
             border-radius: 8px;
         }
+
+        /* API Example */
         .api-example {
             margin-top: 25px;
             padding: 16px;
@@ -298,27 +400,13 @@
             padding: 2px 6px;
             border-radius: 4px;
         }
-
-        /* Voice Select Container */
-        .voice-select-container {
-            display: flex;
-            gap: 10px;
-        }
-        .voice-select-container select {
-            flex: 1;
-        }
-        .voice-info {
-            margin-top: 8px;
-            font-size: 12px;
-            color: #666;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>MiniMax 流式 TTS API</h1>
 
-        <!-- Text Input Section - Matching Reference Design -->
+        <!-- 合成文本 -->
         <div class="text-input-section">
             <label class="text-input-label">合成文本</label>
             <div class="text-input-container">
@@ -329,7 +417,7 @@
             </div>
         </div>
 
-        <!-- Pause Control Section -->
+        <!-- 高级标签区域 -->
         <div class="pause-section" id="textTagsSection" style="display: none;">
             <div class="pause-hint">支持停顿控制：使用 <code>&lt;#x#&gt;</code> 标记停顿时长（秒），如：你好 <#0.5#> 世界</div>
             <div class="pause-controls">
@@ -338,69 +426,15 @@
                 <button type="button" class="tag-btn" onclick="insertPauseTag()">插入停顿</button>
             </div>
             <div class="tags-label">点击插入语气词标签到光标位置:</div>
-        <div class="tags-container">
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(laughs)')" title="(laughs)">笑声</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(chuckle)')" title="(chuckle)">轻笑</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(coughs)')" title="(coughs)">咳嗽</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(clear-throat)')" title="(clear-throat)">清嗓子</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(groans)')" title="(groans)">呻吟</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(breath)')" title="(breath)">换气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(pant)')" title="(pant)">喘气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(inhale)')" title="(inhale)">吸气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(exhale)')" title="(exhale)">呼气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(gasps)')" title="(gasps)">倒吸气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(sniffs)')" title="(sniffs)">吸鼻子</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(sighs)')" title="(sighs)">叹气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(snorts)')" title="(snorts)">喷鼻息</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(burps)')" title="(burps)">打嗝</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(lip-smacking)')" title="(lip-smacking)">咂嘴</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(humming)')" title="(humming)">哼唱</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(hissing)')" title="(hissing)">嘶嘶声</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(emm)')" title="(emm)">嗯</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('(sneezes)')" title="(sneezes)">喷嚏</button>
+            <div class="tags-container">
+                <!-- 语气词按钮将由 loadSoundTags() 动态生成 -->
             </div>
         </div>
 
-        <div class="form-group">
-            <label>选择音色</label>
-            <div class="voice-select-container">
-                <select id="languageSelect" onchange="onLanguageChange()">
-                    <option value="">选择语言</option>
-                </select>
-                <select id="voice">
-                    <option value="">请先选择语言</option>
-                </select>
-            </div>
-            <div class="voice-info" id="voiceInfo">共 0 个可用音色</div>
-        </div>
-
-        <div class="form-group">
-            <label>语速</label>
-            <div class="range-container">
-                <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1">
-                <span class="range-value" id="speedValue">1.0x</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>音量</label>
-            <div class="range-container">
-                <input type="range" id="volume" min="0" max="2" step="0.1" value="1">
-                <span class="range-value" id="volumeValue">1.0</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>语调</label>
-            <div class="range-container">
-                <input type="range" id="pitch" min="-12" max="12" step="1" value="0">
-                <span class="range-value" id="pitchValue">0</span>
-            </div>
-        </div>
-
+        <!-- 模型选择 -->
         <div class="form-group">
             <label for="model">模型选择</label>
-            <select id="model">
+            <select id="model" onchange="onModelChange()">
                 <option value="speech-2.8-hd" selected>Speech 2.8 HD (最新旗舰音质)</option>
                 <option value="speech-2.8-turbo">Speech 2.8 Turbo (最新低时延)</option>
                 <option value="speech-2.6-hd">Speech 2.6 HD (极致音质)</option>
@@ -412,34 +446,91 @@
             </select>
         </div>
 
+        <!-- 音色设置 -->
         <div class="form-group">
-            <label for="emotion">情绪控制</label>
-            <select id="emotion">
-                <option value="auto">自动识别</option>
-                <option value="happy">开心</option>
-                <option value="sad">悲伤</option>
-                <option value="angry">愤怒</option>
-                <option value="fear">恐惧</option>
-                <option value="disgust">厌恶</option>
-                <option value="surprise">惊讶</option>
-                <option value="neutral">中性</option>
-                <option value="lively">生动</option>
-                <option value="whisper">低语</option>
-            </select>
-            <div class="voice-info" style="font-size: 11px; color: #666;">注：生动/低语仅对部分模型生效</div>
+            <div class="section-header">音色设置</div>
+            <div class="voice-select-container">
+                <select id="languageSelect" onchange="onLanguageChange()">
+                    <option value="">选择语言</option>
+                </select>
+                <select id="voice">
+                    <option value="">请先选择语言</option>
+                </select>
+            </div>
+            <div class="voice-info" id="voiceInfo">共 0 个可用音色</div>
         </div>
 
+        <!-- 情绪控制 -->
         <div class="form-group">
-            <label for="audioFormat">音频格式</label>
-            <select id="audioFormat">
-                <option value="mp3" selected>MP3</option>
-                <option value="wav">WAV</option>
-                <option value="pcm">PCM</option>
-            </select>
+            <label>情绪 <span class="sub-label">(点击选择)</span></label>
+            <div class="emotion-chips" id="emotionChips">
+                <!-- 情绪选项由JS动态生成 -->
+            </div>
+            <div class="emotion-warning" id="emotionWarning"></div>
         </div>
 
+        <!-- 语速/音量/音调 -->
         <div class="form-group">
-            <label for="customVoiceId">自定义音色ID（可选）</label>
+            <div class="params-grid">
+                <div>
+                    <label class="range-label">语速 <span class="sub-label" id="speedValue">1.0x</span></label>
+                    <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1">
+                </div>
+                <div>
+                    <label class="range-label">音量 <span class="sub-label" id="volumeValue">1.0</span></label>
+                    <input type="range" id="volume" min="0" max="2" step="0.1" value="1">
+                </div>
+                <div>
+                    <label class="range-label">音调 <span class="sub-label" id="pitchValue">0</span></label>
+                    <input type="range" id="pitch" min="-12" max="12" step="1" value="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- LaTeX 朗读 -->
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="latexReading">
+                <label for="latexReading">LaTeX 公式朗读</label>
+            </div>
+        </div>
+
+        <!-- 音频设置 -->
+        <div class="form-group">
+            <div class="section-header">音频设置</div>
+            <div class="params-grid">
+                <div>
+                    <label>格式</label>
+                    <select id="audioFormat">
+                        <option value="mp3" selected>MP3</option>
+                        <option value="wav">WAV</option>
+                        <option value="pcm">PCM</option>
+                    </select>
+                </div>
+                <div>
+                    <label>采样率</label>
+                    <select id="sampleRate">
+                        <option value="16000">16000 Hz</option>
+                        <option value="24000">24000 Hz</option>
+                        <option value="32000" selected>32000 Hz</option>
+                        <option value="44100">44100 Hz</option>
+                    </select>
+                </div>
+                <div>
+                    <label>比特率</label>
+                    <select id="bitrate">
+                        <option value="32000">32 kbps</option>
+                        <option value="64000">64 kbps</option>
+                        <option value="128000" selected>128 kbps</option>
+                        <option value="192000">192 kbps</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 自定义音色ID -->
+        <div class="form-group">
+            <label for="customVoiceId">自定义音色ID <span class="sub-label">(可选)</span></label>
             <input type="text" id="customVoiceId" placeholder="留空使用下拉选择的音色">
         </div>
 
@@ -465,6 +556,7 @@
     </div>
 
     <script>
+        // DOM Elements
         const speedInput = document.getElementById('speed');
         const volumeInput = document.getElementById('volume');
         const pitchInput = document.getElementById('pitch');
@@ -479,18 +571,36 @@
         const languageSelect = document.getElementById('languageSelect');
         const voiceSelect = document.getElementById('voice');
         const voiceInfo = document.getElementById('voiceInfo');
+        const emotionChips = document.getElementById('emotionChips');
+        const emotionWarning = document.getElementById('emotionWarning');
+        const modelSelect = document.getElementById('model');
 
         let allVoices = [];
         let voicesByLanguage = {};
+        let modelFeatures = null;
+        let selectedEmotion = 'auto';
 
-        // 页面加载时获取音色列表
+        // 情绪配置
+        const emotions = [
+            { id: 'auto', name: '自动', emoji: '🤖' },
+            { id: 'happy', name: '开心', emoji: '😊' },
+            { id: 'sad', name: '悲伤', emoji: '😢' },
+            { id: 'angry', name: '愤怒', emoji: '😠' },
+            { id: 'fear', name: '恐惧', emoji: '😨' },
+            { id: 'disgust', name: '厌恶', emoji: '🤢' },
+            { id: 'surprise', name: '惊讶', emoji: '😲' },
+            { id: 'neutral', name: '中性', emoji: '😐' },
+            { id: 'lively', name: '生动', emoji: '🎭' },
+            { id: 'whisper', name: '低语', emoji: '🤫' }
+        ];
+
+        // 页面加载时获取音色列表和模型特性
         async function loadVoices() {
             try {
                 const response = await fetch('/voices');
                 const data = await response.json();
                 allVoices = data.voices || [];
 
-                // 按语言分组
                 voicesByLanguage = {};
                 allVoices.forEach(v => {
                     const lang = v.language || '未知';
@@ -500,7 +610,6 @@
                     voicesByLanguage[lang].push(v);
                 });
 
-                // 填充语言下拉菜单
                 const languages = Object.keys(voicesByLanguage).sort();
                 languageSelect.innerHTML = '<option value="">选择语言</option>';
                 let defaultLangSelected = false;
@@ -509,14 +618,12 @@
                     option.value = lang;
                     option.textContent = `${lang} (${voicesByLanguage[lang].length})`;
                     languageSelect.appendChild(option);
-                    // 默认选中中文
                     if (lang === '中文' && !defaultLangSelected) {
                         languageSelect.value = lang;
                         defaultLangSelected = true;
                     }
                 });
 
-                // 如果有中文，自动加载中文音色列表
                 if (defaultLangSelected) {
                     onLanguageChange();
                 }
@@ -524,6 +631,94 @@
                 voiceInfo.textContent = `共 ${allVoices.length} 个可用音色，${languages.length} 种语言`;
             } catch (err) {
                 voiceInfo.textContent = '音色加载失败，请刷新重试';
+            }
+        }
+
+        // 加载模型特性配置
+        async function loadModelFeatures() {
+            try {
+                const response = await fetch('/model-features');
+                modelFeatures = await response.json();
+                renderEmotionChips();
+                onModelChange();
+            } catch (err) {
+                console.error('Failed to load model features:', err);
+            }
+        }
+
+        // 渲染情绪芯片
+        function renderEmotionChips() {
+            emotionChips.innerHTML = '';
+            const model = modelSelect.value;
+            const supportedEmotions = modelFeatures?.models?.[model]?.features?.emotions || [];
+
+            emotions.forEach(emotion => {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'emotion-chip';
+                if (emotion.id === selectedEmotion) {
+                    chip.classList.add('active');
+                }
+                if (!supportedEmotions.includes(emotion.id)) {
+                    chip.classList.add('disabled');
+                }
+                chip.innerHTML = `<span>${emotion.emoji}</span><span>${emotion.name}</span>`;
+                chip.onclick = () => {
+                    if (!chip.classList.contains('disabled')) {
+                        selectEmotion(emotion.id);
+                    }
+                };
+                emotionChips.appendChild(chip);
+            });
+        }
+
+        // 选择情绪
+        function selectEmotion(emotionId) {
+            selectedEmotion = emotionId;
+            document.querySelectorAll('.emotion-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            event.target.closest('.emotion-chip').classList.add('active');
+        }
+
+        // 模型变化时更新UI
+        function onModelChange() {
+            const model = modelSelect.value;
+            const supportedEmotions = modelFeatures?.models?.[model]?.features?.emotions || [];
+            const warningDiv = emotionWarning;
+
+            // 更新情绪芯片可用性
+            const chips = emotionChips.querySelectorAll('.emotion-chip');
+            chips.forEach(chip => {
+                const emotionId = chip.querySelector('span:last-child').textContent;
+                const emotion = emotions.find(e => e.name === emotionId);
+                if (emotion && supportedEmotions.includes(emotion.id)) {
+                    chip.classList.remove('disabled');
+                } else {
+                    chip.classList.add('disabled');
+                }
+            });
+
+            // 如果当前选中的情绪不可用，切换到auto
+            if (!supportedEmotions.includes(selectedEmotion)) {
+                selectedEmotion = 'auto';
+                renderEmotionChips();
+            }
+
+            // 显示警告信息
+            const unsupportedEmotions = [];
+            if (!supportedEmotions.includes('lively')) {
+                unsupportedEmotions.push('生动');
+            }
+            if (!supportedEmotions.includes('whisper')) {
+                unsupportedEmotions.push('低语');
+            }
+
+            if (unsupportedEmotions.length > 0) {
+                warningDiv.textContent = `提示: ${unsupportedEmotions.join('/')} 仅对部分模型生效`;
+                warningDiv.style.color = '#888';
+            } else {
+                warningDiv.textContent = '';
             }
         }
 
@@ -542,7 +737,6 @@
             voices.forEach(v => {
                 const option = document.createElement('option');
                 option.value = v.id;
-                // 格式：名称 - 描述（如有）
                 const desc = v.description || '';
                 option.textContent = desc ? `${v.name} - ${desc}` : v.name;
                 option.dataset.description = desc;
@@ -550,12 +744,8 @@
                 voiceSelect.appendChild(option);
             });
 
-            voiceInfo.textContent = `${selectedLang} 共有 ${voices.length} 个音色`;
-
-            // 显示选中音色的描述
             if (voices.length > 0) {
-                const firstVoice = voices[0];
-                voiceInfo.textContent = firstVoice.description || firstVoice.name;
+                voiceInfo.textContent = voices[0].description || voices[0].name;
             }
         }
 
@@ -563,27 +753,27 @@
         voiceSelect.addEventListener('change', () => {
             const selected = voiceSelect.options[voiceSelect.selectedIndex];
             if (selected) {
-                const desc = selected.dataset.description;
-                const name = selected.dataset.name;
-                voiceInfo.textContent = desc || name || '';
+                voiceInfo.textContent = selected.dataset.description || selected.dataset.name || '';
             }
         });
 
+        // 范围输入监听
         speedInput.addEventListener('input', () => speedValue.textContent = speedInput.value + 'x');
         volumeInput.addEventListener('input', () => volumeValue.textContent = volumeInput.value);
         pitchInput.addEventListener('input', () => pitchValue.textContent = pitchInput.value);
 
-        // 页面加载时获取音色
+        // 页面加载
         loadVoices();
+        loadSoundTags();
+        loadModelFeatures();
 
         async function generateAudio() {
             const text = document.getElementById('text').value.trim();
-            const voice = document.getElementById('voice').value;
+            const voice = voiceSelect.value;
             const speed = speedInput.value;
             const volume = volumeInput.value;
             const pitch = pitchInput.value;
-            const model = document.getElementById('model').value;
-            const emotion = document.getElementById('emotion').value;
+            const model = modelSelect.value;
             const audioFormat = document.getElementById('audioFormat').value;
             const customVoiceId = document.getElementById('customVoiceId').value.trim();
 
@@ -602,7 +792,6 @@
             errorDiv.style.display = 'none';
             audioContainer.style.display = 'none';
 
-            // 停止之前的播放
             audioPlayer.pause();
             audioPlayer.currentTime = 0;
 
@@ -617,9 +806,8 @@
                     audio_format: audioFormat
                 });
 
-                // 添加可选参数
-                if (emotion && emotion !== 'auto') {
-                    params.append('emotion', emotion);
+                if (selectedEmotion && selectedEmotion !== 'auto') {
+                    params.append('emotion', selectedEmotion);
                 }
                 if (customVoiceId) {
                     params.append('custom_voice_id', customVoiceId);
@@ -641,19 +829,16 @@
             errorDiv.style.display = 'block';
         }
 
-        // 在光标位置插入文本
         function insertAtCursor(textarea, text) {
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
             const before = textarea.value.substring(0, start);
             const after = textarea.value.substring(end);
             textarea.value = before + text + after;
-            // 设置光标位置在插入文本之后
             textarea.selectionStart = textarea.selectionEnd = start + text.length;
             textarea.focus();
         }
 
-        // 插入停顿标签
         function insertPauseTag() {
             const textarea = document.getElementById('text');
             const seconds = document.getElementById('pauseSeconds').value;
@@ -661,14 +846,44 @@
             insertAtCursor(textarea, tag);
         }
 
-        // 插入语气词标签
-        function insertSoundEffect(effect) {
+        function insertSoundEffect(tag) {
             const textarea = document.getElementById('text');
-            const tag = `<${effect}>`;
             insertAtCursor(textarea, tag);
         }
 
-        // 显示/隐藏文本标签区域
+        async function loadSoundTags() {
+            try {
+                const response = await fetch('/sound-tags');
+                const data = await response.json();
+
+                const container = document.querySelector('.tags-container');
+                if (container && data.sound_effects) {
+                    container.innerHTML = '';
+                    data.sound_effects.forEach(effect => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'tag-btn';
+                        btn.textContent = effect.display;
+                        btn.title = effect.tag;
+                        btn.onclick = () => insertSoundEffect(effect.tag);
+                        container.appendChild(btn);
+                    });
+                }
+
+                if (data.pause_tag) {
+                    const pauseInput = document.getElementById('pauseSeconds');
+                    if (pauseInput) {
+                        pauseInput.min = data.pause_tag.min_seconds || 0.1;
+                        pauseInput.max = data.pause_tag.max_seconds || 10;
+                        pauseInput.step = data.pause_tag.step || 0.1;
+                        pauseInput.value = data.pause_tag.default_seconds || 0.5;
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load sound tags:', err);
+            }
+        }
+
         function toggleTextTags() {
             const section = document.getElementById('textTagsSection');
             const btn = document.querySelector('.tag-toggle-btn');
@@ -681,5 +896,192 @@
             }
         }
     </script>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.inland-security-footer {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
+  width: fit-content;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tooltip-container {
+  position: relative;
+}
+
+.trigger-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.minimax-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 300;
+  color: #adadad;
+  text-decoration: none;
+}
+
+.minimax-link:visited {
+  color: #adadad;
+}
+
+.minimax-link:hover {
+  color: #666666;
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  padding-bottom: 16px; /* 8px 内容间距 + 8px 用于鼠标移动的透明区域 */
+  font-size: 12px;
+  line-height: 17px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: #171717;
+}
+
+/* 创建透明的连接区域，让鼠标可以平滑移动到 tooltip */
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 16px;
+}
+
+.tooltip-container:hover .tooltip-content {
+  display: flex;
+}
+
+.info-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.beian-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #171717;
+}
+
+.beian-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+}
+
+.underline-text {
+  color: #171717;
+  text-decoration: underline;
+}
+
+.underline-text:hover {
+  color: #000000;
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .trigger-content {
+    background-color: transparent;
+  }
+
+  .minimax-link,
+  .minimax-link:visited {
+    color: #666666;
+  }
+
+  .minimax-link:hover {
+    color: #adadad;
+  }
+
+  .tooltip-content {
+    background-color: #262626;
+    color: #ededed;
+  }
+
+  .beian-link,
+  .underline-text {
+    color: #ededed;
+  }
+
+  .underline-text:hover {
+    color: #ffffff;
+  }
+}
+
+</style>
+<div class="inland-security-footer">
+  <div class="tooltip-container">
+    <div class="trigger-content">
+      <a href="https://www.minimaxi.com/" target="_blank" rel="noreferrer" class="minimax-link">
+        <span>© 2026 MiniMax</span>
+      </a>
+    </div>
+    <div class="tooltip-content">
+      <section class="info-section">
+        <span>上海稀宇科技有限公司</span>
+      </section>
+
+      <section class="info-section">
+        <a class="beian-link" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402010179" target="_blank" rel="noreferrer">
+          <img alt="hailuo-beian-icon" src="https://cdn.hailuoai.com/hailuo-video-web/public_assets/223037d3-79fd-4db0-a456-749f38a6a14b.png" class="beian-icon">
+          <span class="underline-text">沪公网安备31010402010179号</span>
+        </a>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer" class="underline-text">
+          沪ICP备2023003282号-38
+        </a>
+      </section>
+
+      <section class="info-section">
+        <span>模型名称：MiniMax</span>
+        <span>备案号：Shanghai-MiniMax-202505230046</span>
+      </section>
+
+      <section class="info-section">
+        <a href="https://agent.minimaxi.com/doc/zh/terms-of-service.html" target="_blank" rel="noreferrer" class="underline-text">
+          用户协议
+        </a>
+        <a href="https://agent.minimaxi.com/doc/zh/privacy-policy.html" target="_blank" rel="noreferrer" class="underline-text">
+          隐私政策
+        </a>
+      </section>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
