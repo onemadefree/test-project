@@ -12,57 +12,178 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: #1a1a1a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;
+            padding: 40px 20px;
         }
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
+            background: #242424;
+            border-radius: 16px;
+            padding: 30px;
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 650px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         h1 {
-            color: #1a1a2e;
+            color: #ffffff;
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin-bottom: 24px;
+            font-size: 24px;
+            font-weight: 600;
         }
-        .form-group {
+
+        /* Text Input Section - Dark Theme */
+        .text-input-section {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 20px;
         }
-        label {
+        .text-input-label {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
             display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
+        }
+        .text-input-container {
+            background: #1a1a1a;
+            border: 1px solid #3d3d3d;
+            border-radius: 10px;
+            padding: 12px;
         }
         textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            min-height: 120px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 100px;
             resize: vertical;
-            transition: border-color 0.3s;
+            font-family: inherit;
         }
         textarea:focus {
             outline: none;
+        }
+        textarea::placeholder {
+            color: #666;
+        }
+        .text-input-footer {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #3d3d3d;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .tag-toggle-btn {
+            background: #3d3d3d;
+            color: #999;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tag-toggle-btn:hover {
+            background: #4d4d4d;
+            color: #fff;
+        }
+
+        /* Pause Control Section */
+        .pause-section {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .pause-hint {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .pause-hint code {
+            background: #3d3d3d;
+            color: #4fc3f7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+        }
+        .pause-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .pause-input {
+            width: 70px;
+            padding: 8px 12px;
+            background: #1a1a1a;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+        }
+        .pause-input:focus {
+            outline: none;
             border-color: #667eea;
+        }
+        .pause-unit {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Sound Effect Tags */
+        .tags-label {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag-btn {
+            padding: 6px 14px;
+            background: #3d3d3d;
+            color: #ccc;
+            border: none;
+            border-radius: 16px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tag-btn:hover {
+            background: #5d5d5d;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-weight: 500;
+            font-size: 14px;
         }
         select, input[type="range"] {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #3d3d3d;
             border-radius: 10px;
-            font-size: 16px;
-            background: white;
+            font-size: 14px;
+            background: #2d2d2d;
+            color: #fff;
         }
         select:focus {
             outline: none;
@@ -79,142 +200,117 @@
             border: none;
             -webkit-appearance: none;
             height: 6px;
-            background: #e0e0e0;
+            background: #3d3d3d;
             border-radius: 3px;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: #667eea;
             border-radius: 50%;
             cursor: pointer;
         }
         .range-value {
-            min-width: 50px;
+            min-width: 45px;
             text-align: center;
             font-weight: 600;
             color: #667eea;
+            font-size: 14px;
         }
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         .btn:disabled {
-            background: #ccc;
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
-        }
-        .audio-container {
-            margin-top: 30px;
-            text-align: center;
-            display: none;
-        }
-        audio {
-            width: 100%;
-            margin-top: 15px;
-            border-radius: 10px;
         }
         .loading {
             display: none;
             text-align: center;
-            margin-top: 20px;
+            padding: 30px;
         }
         .spinner {
+            border: 3px solid #3d3d3d;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
             width: 40px;
             height: 40px;
-            border: 4px solid #e0e0e0;
-            border-top-color: #667eea;
-            border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .error {
-            color: #e74c3c;
-            background: #fdeaea;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
             display: none;
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 14px;
         }
-        .voice-info {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
+        .audio-container {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #2d2d2d;
+            border-radius: 12px;
         }
-        .voice-select-container {
-            display: flex;
-            justify-content: space-between;
+        .audio-container label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        audio {
+            width: 100%;
+            border-radius: 8px;
         }
         .api-example {
-            background: #f8f9fa;
-            padding: 15px;
+            margin-top: 25px;
+            padding: 16px;
+            background: #2d2d2d;
             border-radius: 10px;
-            margin-top: 30px;
-            font-family: monospace;
-            font-size: 14px;
-            overflow-x: auto;
+            font-size: 12px;
+            color: #888;
         }
         .api-example code {
-            color: #333;
-        }
-        .text-tags-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .pause-hint {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .pause-hint code {
-            background: #e9ecef;
+            color: #4fc3f7;
+            background: #1a1a1a;
             padding: 2px 6px;
             border-radius: 4px;
-            font-family: monospace;
         }
-        .pause-input-row {
+
+        /* Voice Select Container */
+        .voice-select-container {
             display: flex;
-            align-items: center;
             gap: 10px;
-            margin-bottom: 10px;
         }
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+        .voice-select-container select {
+            flex: 1;
         }
-        .tag-btn {
-            padding: 6px 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 15px;
+        .voice-info {
+            margin-top: 8px;
             font-size: 12px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .tag-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            color: #666;
         }
     </style>
 </head>
@@ -222,21 +318,56 @@
     <div class="container">
         <h1>MiniMax 流式 TTS API</h1>
 
-        <div class="form-group">
-            <label for="text">输入文本</label>
-            <textarea id="text" placeholder="请输入要转换的文本...">欢迎使用 MiniMax 流式文字转语音服务，这项技术可以让您的文字以自然的声音朗读出来。</textarea>
-            <div style="margin-top: 8px; text-align: right;">
-                <button type="button" class="tag-btn" onclick="toggleTextTags()" style="font-size: 11px; padding: 4px 10px;">高级标签 ▾</button>
+        <!-- Text Input Section - Matching Reference Design -->
+        <div class="text-input-section">
+            <label class="text-input-label">合成文本</label>
+            <div class="text-input-container">
+                <textarea id="text" placeholder="请输入要转换的文本...">欢迎使用 MiniMax 流式文字转语音服务，这项技术可以让您的文字以自然的声音朗读出来。</textarea>
+            </div>
+            <div class="text-input-footer">
+                <button type="button" class="tag-toggle-btn" onclick="toggleTextTags()">高级标签 ▾</button>
+            </div>
+        </div>
+
+        <!-- Pause Control Section -->
+        <div class="pause-section" id="textTagsSection" style="display: none;">
+            <div class="pause-hint">支持停顿控制：使用 <code>&lt;#x#&gt;</code> 标记停顿时长（秒），如：你好 <#0.5#> 世界</div>
+            <div class="pause-controls">
+                <input type="number" id="pauseSeconds" class="pause-input" min="0.1" max="10" step="0.1" value="0.5">
+                <span class="pause-unit">秒</span>
+                <button type="button" class="tag-btn" onclick="insertPauseTag()">插入停顿</button>
+            </div>
+            <div class="tags-label">点击插入语气词标签到光标位置:</div>
+            <div class="tags-container">
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('笑声')">笑声</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('轻笑')">轻笑</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('咳嗽')">咳嗽</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('清嗓子')">清嗓子</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('呻吟')">呻吟</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('换气')">换气</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('喘气')">喘气</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('吸气')">吸气</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('呼气')">呼气</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('倒吸气')">倒吸气</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('吸鼻子')">吸鼻子</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('叹气')">叹气</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('喷鼻息')">喷鼻息</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('打嗝')">打嗝</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('咂嘴')">咂嘴</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('哼唱')">哼唱</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('嘶嘶声')">嘶嘶声</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('嗯')">嗯</button>
+                <button type="button" class="tag-btn" onclick="insertSoundEffect('喷嚏')">喷嚏</button>
             </div>
         </div>
 
         <div class="form-group">
             <label>选择音色</label>
             <div class="voice-select-container">
-                <select id="languageSelect" onchange="onLanguageChange()" style="width: 48%; margin-right: 4%;">
+                <select id="languageSelect" onchange="onLanguageChange()">
                     <option value="">选择语言</option>
                 </select>
-                <select id="voice" style="width: 48%;">
+                <select id="voice">
                     <option value="">请先选择语言</option>
                 </select>
             </div>
@@ -269,7 +400,7 @@
 
         <div class="form-group">
             <label for="model">模型选择</label>
-            <select id="model" style="width: 100%;">
+            <select id="model">
                 <option value="speech-2.8-hd" selected>Speech 2.8 HD (最新旗舰音质)</option>
                 <option value="speech-2.8-turbo">Speech 2.8 Turbo (最新低时延)</option>
                 <option value="speech-2.6-hd">Speech 2.6 HD (极致音质)</option>
@@ -283,7 +414,7 @@
 
         <div class="form-group">
             <label for="emotion">情绪控制</label>
-            <select id="emotion" style="width: 100%;">
+            <select id="emotion">
                 <option value="auto">自动识别</option>
                 <option value="happy">开心</option>
                 <option value="sad">悲伤</option>
@@ -295,12 +426,12 @@
                 <option value="lively">生动</option>
                 <option value="whisper">低语</option>
             </select>
-            <div class="voice-info" style="font-size: 11px; color: #999;">注：生动/低语仅对部分模型生效</div>
+            <div class="voice-info" style="font-size: 11px; color: #666;">注：生动/低语仅对部分模型生效</div>
         </div>
 
         <div class="form-group">
             <label for="audioFormat">音频格式</label>
-            <select id="audioFormat" style="width: 100%;">
+            <select id="audioFormat">
                 <option value="mp3" selected>MP3</option>
                 <option value="wav">WAV</option>
                 <option value="pcm">PCM</option>
@@ -309,7 +440,7 @@
 
         <div class="form-group">
             <label for="customVoiceId">自定义音色ID（可选）</label>
-            <input type="text" id="customVoiceId" placeholder="留空使用下拉选择的音色" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+            <input type="text" id="customVoiceId" placeholder="留空使用下拉选择的音色">
         </div>
 
         <button class="btn" id="generateBtn" onclick="generateAudio()">生成音频</button>
@@ -330,37 +461,6 @@
             <strong>API 调用示例：</strong><br><br>
             <code>POST /tts/stream</code><br>
             <code>GET /tts/stream?text=你好&voice=female-shaonv-jingpin&speed=1.0</code>
-        </div>
-
-        <div class="text-tags-section" id="textTagsSection">
-            <label style="margin-top: 10px;">文本标签</label>
-            <div class="pause-hint">停顿控制：使用 <code>&lt;#x#&gt;</code> 标记停顿时长（秒）</div>
-            <div class="pause-input-row">
-                <input type="number" id="pauseSeconds" min="0.1" max="10" step="0.1" value="0.5" style="width: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                <span style="color: #666;">秒</span>
-                <button type="button" class="tag-btn" onclick="insertPauseTag()">插入停顿</button>
-            </div>
-            <div class="tags-container">
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('笑声')">笑声</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('轻笑')">轻笑</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('咳嗽')">咳嗽</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('清嗓子')">清嗓子</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('呻吟')">呻吟</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('换气')">换气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('喘气')">喘气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('吸气')">吸气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('呼气')">呼气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('倒吸气')">倒吸气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('吸鼻子')">吸鼻子</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('叹气')">叹气</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('喷鼻息')">喷鼻息</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('打嗝')">打嗝</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('咂嘴')">咂嘴</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('哼唱')">哼唱</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('嘶嘶声')">嘶嘶声</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('嗯')">嗯</button>
-                <button type="button" class="tag-btn" onclick="insertSoundEffect('喷嚏')">喷嚏</button>
-            </div>
         </div>
     </div>
 
@@ -566,6 +666,19 @@
             const textarea = document.getElementById('text');
             const tag = `<${effect}>`;
             insertAtCursor(textarea, tag);
+        }
+
+        // 显示/隐藏文本标签区域
+        function toggleTextTags() {
+            const section = document.getElementById('textTagsSection');
+            const btn = document.querySelector('.tag-toggle-btn');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                btn.textContent = '高级标签 ▲';
+            } else {
+                section.style.display = 'none';
+                btn.textContent = '高级标签 ▾';
+            }
         }
     </script>
 </body>
