@@ -282,12 +282,23 @@
                 // 填充语言下拉菜单
                 const languages = Object.keys(voicesByLanguage).sort();
                 languageSelect.innerHTML = '<option value="">选择语言</option>';
+                let defaultLangSelected = false;
                 languages.forEach(lang => {
                     const option = document.createElement('option');
                     option.value = lang;
                     option.textContent = `${lang} (${voicesByLanguage[lang].length})`;
                     languageSelect.appendChild(option);
+                    // 默认选中中文
+                    if (lang === '中文' && !defaultLangSelected) {
+                        languageSelect.value = lang;
+                        defaultLangSelected = true;
+                    }
                 });
+
+                // 如果有中文，自动加载中文音色列表
+                if (defaultLangSelected) {
+                    onLanguageChange();
+                }
 
                 voiceInfo.textContent = `共 ${allVoices.length} 个可用音色，${languages.length} 种语言`;
             } catch (err) {
@@ -310,19 +321,30 @@
             voices.forEach(v => {
                 const option = document.createElement('option');
                 option.value = v.id;
-                option.textContent = v.name;
-                option.dataset.description = v.description || '';
+                // 格式：名称 - 描述（如有）
+                const desc = v.description || '';
+                option.textContent = desc ? `${v.name} - ${desc}` : v.name;
+                option.dataset.description = desc;
+                option.dataset.name = v.name;
                 voiceSelect.appendChild(option);
             });
 
             voiceInfo.textContent = `${selectedLang} 共有 ${voices.length} 个音色`;
+
+            // 显示选中音色的描述
+            if (voices.length > 0) {
+                const firstVoice = voices[0];
+                voiceInfo.textContent = firstVoice.description || firstVoice.name;
+            }
         }
 
         // 音色选择变化时显示详情
         voiceSelect.addEventListener('change', () => {
             const selected = voiceSelect.options[voiceSelect.selectedIndex];
-            if (selected && selected.dataset.description) {
-                voiceInfo.textContent = selected.dataset.description;
+            if (selected) {
+                const desc = selected.dataset.description;
+                const name = selected.dataset.name;
+                voiceInfo.textContent = desc || name || '';
             }
         });
 
