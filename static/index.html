@@ -158,6 +158,10 @@
             color: #888;
             margin-top: 5px;
         }
+        .voice-select-container {
+            display: flex;
+            justify-content: space-between;
+        }
         .api-example {
             background: #f8f9fa;
             padding: 15px;
@@ -182,11 +186,16 @@
         </div>
 
         <div class="form-group">
-            <label for="voice">选择音色</label>
-            <input type="text" id="voiceSearch" placeholder="搜索音色..." oninput="filterVoices()" style="width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 4px;">
-            <select id="voice" size="10" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: white;">
-            </select>
-            <div class="voice-info" id="voiceInfo">加载中...</div>
+            <label>选择音色</label>
+            <div class="voice-select-container">
+                <select id="languageSelect" onchange="onLanguageChange()" style="width: 48%; margin-right: 4%;">
+                    <option value="">选择语言</option>
+                </select>
+                <select id="voice" style="width: 48%;">
+                    <option value="">请先选择语言</option>
+                </select>
+            </div>
+            <div class="voice-info" id="voiceInfo">共 0 个可用音色</div>
         </div>
 
         <div class="form-group">
@@ -246,10 +255,12 @@
         const audioContainer = document.getElementById('audioContainer');
         const audioPlayer = document.getElementById('audioPlayer');
         const errorDiv = document.getElementById('error');
+        const languageSelect = document.getElementById('languageSelect');
         const voiceSelect = document.getElementById('voice');
         const voiceInfo = document.getElementById('voiceInfo');
 
         let allVoices = [];
+        let voicesByLanguage = {};
 
         // 页面加载时获取音色列表
         async function loadVoices() {
@@ -257,59 +268,63 @@
                 const response = await fetch('/voices');
                 const data = await response.json();
                 allVoices = data.voices || [];
-                renderVoices(allVoices);
-                voiceInfo.textContent = `共 ${allVoices.length} 个可用音色`;
+
+                // 按语言分组
+                voicesByLanguage = {};
+                allVoices.forEach(v => {
+                    const lang = v.language || '未知';
+                    if (!voicesByLanguage[lang]) {
+                        voicesByLanguage[lang] = [];
+                    }
+                    voicesByLanguage[lang].push(v);
+                });
+
+                // 填充语言下拉菜单
+                const languages = Object.keys(voicesByLanguage).sort();
+                languageSelect.innerHTML = '<option value="">选择语言</option>';
+                languages.forEach(lang => {
+                    const option = document.createElement('option');
+                    option.value = lang;
+                    option.textContent = `${lang} (${voicesByLanguage[lang].length})`;
+                    languageSelect.appendChild(option);
+                });
+
+                voiceInfo.textContent = `共 ${allVoices.length} 个可用音色，${languages.length} 种语言`;
             } catch (err) {
-                voiceInfo.textContent = '音色加载失败，使用默认音色';
+                voiceInfo.textContent = '音色加载失败，请刷新重试';
             }
         }
 
-        // 渲染音色列表
-        function renderVoices(voices) {
+        // 语言选择变化时更新音色列表
+        function onLanguageChange() {
+            const selectedLang = languageSelect.value;
             voiceSelect.innerHTML = '';
+
+            if (!selectedLang) {
+                voiceSelect.innerHTML = '<option value="">请先选择语言</option>';
+                voiceInfo.textContent = `共 ${allVoices.length} 个可用音色`;
+                return;
+            }
+
+            const voices = voicesByLanguage[selectedLang] || [];
             voices.forEach(v => {
                 const option = document.createElement('option');
                 option.value = v.id;
-                option.textContent = `${v.name} (${v.language})`;
-                option.dataset.name = v.name;
-                option.dataset.language = v.language;
+                option.textContent = v.name;
                 option.dataset.description = v.description || '';
                 voiceSelect.appendChild(option);
             });
 
-            // 选中第一个
-            if (voiceSelect.options.length > 0) {
-                voiceSelect.selectedIndex = 0;
-                updateVoiceInfo();
-            }
-        }
-
-        // 更新音色信息显示
-        function updateVoiceInfo() {
-            const selected = voiceSelect.options[voiceSelect.selectedIndex];
-            if (selected) {
-                const desc = selected.dataset.description;
-                voiceInfo.textContent = desc ? desc : selected.dataset.language;
-            }
-        }
-
-        // 搜索过滤音色
-        function filterVoices() {
-            const searchText = document.getElementById('voiceSearch').value.toLowerCase();
-            if (!searchText) {
-                renderVoices(allVoices);
-                return;
-            }
-            const filtered = allVoices.filter(v =>
-                v.name.toLowerCase().includes(searchText) ||
-                v.id.toLowerCase().includes(searchText) ||
-                v.language.toLowerCase().includes(searchText)
-            );
-            renderVoices(filtered);
+            voiceInfo.textContent = `${selectedLang} 共有 ${voices.length} 个音色`;
         }
 
         // 音色选择变化时显示详情
-        voiceSelect.addEventListener('change', updateVoiceInfo);
+        voiceSelect.addEventListener('change', () => {
+            const selected = voiceSelect.options[voiceSelect.selectedIndex];
+            if (selected && selected.dataset.description) {
+                voiceInfo.textContent = selected.dataset.description;
+            }
+        });
 
         speedInput.addEventListener('input', () => speedValue.textContent = speedInput.value + 'x');
         volumeInput.addEventListener('input', () => volumeValue.textContent = volumeInput.value);
