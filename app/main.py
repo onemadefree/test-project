@@ -42,11 +42,25 @@ class TTSRequest(BaseModel):
     volume: float = 1.0
     pitch: float = 0.0
     emotion: Optional[str] = None
+    model: str = "speech-2.8-hd"
+    audio_format: str = "mp3"
+    sample_rate: int = 32000
+    bitrate: int = 128000
+    channel: int = 1
+    stream: bool = True
+    voice_id: Optional[str] = None  # 自定义音色ID
 
 
 def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
                        volume: float = 1.0, pitch: float = 0.0,
-                       emotion: Optional[str] = None) -> bytes:
+                       emotion: Optional[str] = None,
+                       model: str = "speech-2.8-hd",
+                       audio_format: str = "mp3",
+                       sample_rate: int = 32000,
+                       bitrate: int = 128000,
+                       channel: int = 1,
+                       stream: bool = True,
+                       custom_voice_id: Optional[str] = None) -> bytes:
     """
     调用 MiniMax TTS API，返回完整音频数据
     """
@@ -63,24 +77,34 @@ def generate_tts_audio(text: str, voice: str, speed: float = 1.0,
         "Content-Type": "application/json"
     }
 
+    # 构建音色设置
+    voice_id = custom_voice_id if custom_voice_id else voice
+
     payload = {
-        "model": "speech-2.8-hd",
+        "model": model,
         "text": text,
-        "stream": True,
+        "stream": stream,
         "voice_setting": {
-            "voice_id": voice,
+            "voice_id": voice_id,
             "speed": float(speed),
             "vol": float(volume),
             "pitch": int(pitch)
         },
         "audio_setting": {
-            "sample_rate": 32000,
-            "bitrate": 128000,
-            "format": "mp3",
-            "channel": 1
+            "sample_rate": sample_rate,
+            "bitrate": bitrate,
+            "format": audio_format,
+            "channel": channel
+        },
+        "pronunciation_dict": {
+            "tone": []
         },
         "output_format": "hex"
     }
+
+    # 添加情绪参数（如果有）
+    if emotion and emotion != "auto":
+        payload["voice_setting"]["emotion"] = emotion
 
     with httpx.Client(timeout=60.0) as client:
         response = client.post(
@@ -186,11 +210,27 @@ async def tts_stream(request: TTSRequest):
             speed=request.speed,
             volume=request.volume,
             pitch=request.pitch,
-            emotion=request.emotion
+            emotion=request.emotion,
+            model=request.model,
+            audio_format=request.audio_format,
+            sample_rate=request.sample_rate,
+            bitrate=request.bitrate,
+            channel=request.channel,
+            stream=request.stream,
+            custom_voice_id=request.voice_id
         )
+
+        # 根据音频格式确定 media_type
+        if request.audio_format == "wav":
+            media_type = "audio/wav"
+        elif request.audio_format == "pcm":
+            media_type = "audio/pcm"
+        else:
+            media_type = "audio/mpeg"
+
         return StreamingResponse(
             iter([audio_data]),
-            media_type="audio/mpeg",
+            media_type=media_type,
             headers={
                 "Content-Disposition": "inline",
                 "Content-Length": str(len(audio_data))
@@ -206,7 +246,14 @@ async def tts_stream_get(
     voice: str = Query("female-shaonv-jingpin", description="音色ID"),
     speed: float = Query(1.0, ge=0.5, le=2.0, description="语速"),
     volume: float = Query(1.0, ge=0, le=2.0, description="音量"),
-    pitch: float = Query(0, ge=-12, le=12, description="语调")
+    pitch: float = Query(0, ge=-12, le=12, description="语调"),
+    emotion: str = Query(None, description="情绪: auto/happy/sad/angry/fear/disgust/surprise/neutral"),
+    model: str = Query("speech-2.8-hd", description="模型选择"),
+    audio_format: str = Query("mp3", description="音频格式: mp3/wav/pcm"),
+    sample_rate: int = Query(32000, description="采样率"),
+    bitrate: int = Query(128000, description="比特率"),
+    channel: int = Query(1, ge=1, le=2, description="声道: 1单声道/2双声道"),
+    custom_voice_id: str = Query(None, description="自定义音色ID")
 ):
     """
     GET 方式的流式 TTS 接口
@@ -224,11 +271,27 @@ async def tts_stream_get(
             speed=speed,
             volume=volume,
             pitch=pitch,
-            emotion=None
+            emotion=emotion,
+            model=model,
+            audio_format=audio_format,
+            sample_rate=sample_rate,
+            bitrate=bitrate,
+            channel=channel,
+            stream=True,
+            custom_voice_id=custom_voice_id
         )
+
+        # 根据音频格式确定 media_type
+        if audio_format == "wav":
+            media_type = "audio/wav"
+        elif audio_format == "pcm":
+            media_type = "audio/pcm"
+        else:
+            media_type = "audio/mpeg"
+
         return StreamingResponse(
             iter([audio_data]),
-            media_type="audio/mpeg",
+            media_type=media_type,
             headers={
                 "Content-Disposition": "inline",
                 "Content-Length": str(len(audio_data))

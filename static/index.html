@@ -222,6 +222,49 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="model">模型选择</label>
+            <select id="model" style="width: 100%;">
+                <option value="speech-2.8-hd" selected>Speech 2.8 HD (最新旗舰音质)</option>
+                <option value="speech-2.8-turbo">Speech 2.8 Turbo (最新低时延)</option>
+                <option value="speech-2.6-hd">Speech 2.6 HD (极致音质)</option>
+                <option value="speech-2.6-turbo">Speech 2.6 Turbo (超低时延)</option>
+                <option value="speech-02-hd">Speech 02 HD (稳定性好)</option>
+                <option value="speech-02-turbo">Speech 02 Turbo (性能出色)</option>
+                <option value="speech-01-hd">Speech 01 HD (经典版本)</option>
+                <option value="speech-01-turbo">Speech 01 Turbo (经典快速版)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="emotion">情绪控制</label>
+            <select id="emotion" style="width: 100%;">
+                <option value="auto">自动识别</option>
+                <option value="happy">开心</option>
+                <option value="sad">悲伤</option>
+                <option value="angry">愤怒</option>
+                <option value="fear">恐惧</option>
+                <option value="disgust">厌恶</option>
+                <option value="surprise">惊讶</option>
+                <option value="neutral">中性</option>
+            </select>
+            <div class="voice-info" style="font-size: 11px; color: #999;">注：生动/低语仅对部分模型生效</div>
+        </div>
+
+        <div class="form-group">
+            <label for="audioFormat">音频格式</label>
+            <select id="audioFormat" style="width: 100%;">
+                <option value="mp3" selected>MP3</option>
+                <option value="wav">WAV</option>
+                <option value="pcm">PCM</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="customVoiceId">自定义音色ID（可选）</label>
+            <input type="text" id="customVoiceId" placeholder="留空使用下拉选择的音色" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
         <button class="btn" id="generateBtn" onclick="generateAudio()">生成音频</button>
 
         <div class="loading" id="loading">
@@ -361,6 +404,10 @@
             const speed = speedInput.value;
             const volume = volumeInput.value;
             const pitch = pitchInput.value;
+            const model = document.getElementById('model').value;
+            const emotion = document.getElementById('emotion').value;
+            const audioFormat = document.getElementById('audioFormat').value;
+            const customVoiceId = document.getElementById('customVoiceId').value.trim();
 
             if (!text) {
                 showError('请输入要转换的文本');
@@ -387,8 +434,18 @@
                     voice: voice,
                     speed: speed,
                     volume: volume,
-                    pitch: pitch
+                    pitch: pitch,
+                    model: model,
+                    audio_format: audioFormat
                 });
+
+                // 添加可选参数
+                if (emotion && emotion !== 'auto') {
+                    params.append('emotion', emotion);
+                }
+                if (customVoiceId) {
+                    params.append('custom_voice_id', customVoiceId);
+                }
 
                 audioPlayer.src = `/tts/stream?${params.toString()}`;
                 audioPlayer.load();
