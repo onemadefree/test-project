@@ -127,16 +127,38 @@ async def root():
 
 @app.get("/voices")
 async def list_voices():
-    """返回可用音色列表"""
+    """返回可用音色列表（基于 MiniMax 国内版 API）"""
     return {
         "voices": [
-            {"id": "female-shaonv-jingpin", "name": "精选少女", "language": "中文"},
-            {"id": "male-qn-qingse", "name": "青色青年", "language": "中文"},
-            {"id": "female-tianmei", "name": "甜美女孩", "language": "中文"},
-            {"id": "female-yuanjun", "name": "温柔御姐", "language": "中文"},
-            {"id": "male-bada", "name": "霸道总裁", "language": "中文"},
-            {"id": "male-yunyang", "name": "磁性云扬", "language": "中文"},
-            {"id": "English_expressive_narrator", "name": "英文 Narrator", "language": "英文"},
+            # v1 基础音色
+            {"id": "male-qn-qingse", "name": "青涩青年", "language": "中文", "version": "v1"},
+            {"id": "male-qn-jingying", "name": "精英青年", "language": "中文", "version": "v1"},
+            {"id": "male-qn-badao", "name": "霸道青年", "language": "中文", "version": "v1"},
+            {"id": "male-qn-daxuesheng", "name": "青年大学生", "language": "中文", "version": "v1"},
+            {"id": "female-shaonv", "name": "少女", "language": "中文", "version": "v1"},
+            {"id": "female-yujie", "name": "御姐", "language": "中文", "version": "v1"},
+            {"id": "female-chengshu", "name": "成熟女性", "language": "中文", "version": "v1"},
+            {"id": "female-tianmei", "name": "甜美女性", "language": "中文", "version": "v1"},
+            # v1 精选音色（Beta）
+            {"id": "male-qn-qingse-jingpin", "name": "青涩青年-精选", "language": "中文", "version": "v1"},
+            {"id": "male-qn-jingying-jingpin", "name": "精英青年-精选", "language": "中文", "version": "v1"},
+            {"id": "male-qn-badao-jingpin", "name": "霸道青年-精选", "language": "中文", "version": "v1"},
+            {"id": "male-qn-daxuesheng-jingpin", "name": "青年大学生-精选", "language": "中文", "version": "v1"},
+            {"id": "female-shaonv-jingpin", "name": "少女-精选", "language": "中文", "version": "v1"},
+            {"id": "female-yujie-jingpin", "name": "御姐-精选", "language": "中文", "version": "v1"},
+            {"id": "female-chengshu-jingpin", "name": "成熟女性-精选", "language": "中文", "version": "v1"},
+            {"id": "female-tianmei-jingpin", "name": "甜美女性-精选", "language": "中文", "version": "v1"},
+            # v2 音色
+            {"id": "clever_boy", "name": "聪明男童", "language": "中文", "version": "v2"},
+            {"id": "cute_boy", "name": "可爱男童", "language": "中文", "version": "v2"},
+            {"id": "lovely_girl", "name": "萌萌女童", "language": "中文", "version": "v2"},
+            {"id": "badao_shaoye", "name": "霸道少爷", "language": "中文", "version": "v2"},
+            {"id": "tianxin_xiaoling", "name": "甜心小玲", "language": "中文", "version": "v2"},
+            {"id": "wumei_yujie", "name": "妩媚御姐", "language": "中文", "version": "v2"},
+            # 英文音色
+            {"id": "English_expressive_narrator", "name": "英文 Narrator", "language": "英文", "version": "v2"},
+            {"id": "Sweet_Girl", "name": "Sweet Girl", "language": "英文", "version": "v2"},
+            {"id": "Charming_Santa", "name": "Charming Santa", "language": "英文", "version": "v2"},
         ]
     }
 

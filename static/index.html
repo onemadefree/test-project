@@ -184,15 +184,41 @@
         <div class="form-group">
             <label for="voice">选择音色</label>
             <select id="voice">
-                <option value="female-shaonv-jingpin" selected>精选少女</option>
-                <option value="male-qn-qingse">青色青年</option>
-                <option value="female-tianmei">甜美女孩</option>
-                <option value="female-yuanjun">温柔御姐</option>
-                <option value="male-bada">霸道总裁</option>
-                <option value="male-yunyang">磁性云扬</option>
-                <option value="English_expressive_narrator">英文 Narrator</option>
+                <optgroup label="v1 精选音色（推荐）">
+                    <option value="female-shaonv-jingpin" selected>少女-精选</option>
+                    <option value="male-qn-qingse-jingpin">青涩青年-精选</option>
+                    <option value="male-qn-jingying-jingpin">精英青年-精选</option>
+                    <option value="male-qn-badao-jingpin">霸道青年-精选</option>
+                    <option value="female-yujie-jingpin">御姐-精选</option>
+                    <option value="female-chengshu-jingpin">成熟女性-精选</option>
+                    <option value="female-tianmei-jingpin">甜美女性-精选</option>
+                    <option value="male-qn-daxuesheng-jingpin">青年大学生-精选</option>
+                </optgroup>
+                <optgroup label="v1 基础音色">
+                    <option value="female-shaonv">少女</option>
+                    <option value="male-qn-qingse">青涩青年</option>
+                    <option value="male-qn-jingying">精英青年</option>
+                    <option value="male-qn-badao">霸道青年</option>
+                    <option value="female-yujie">御姐</option>
+                    <option value="female-chengshu">成熟女性</option>
+                    <option value="female-tianmei">甜美女性</option>
+                    <option value="male-qn-daxuesheng">青年大学生</option>
+                </optgroup>
+                <optgroup label="v2 音色">
+                    <option value="badao_shaoye">霸道少爷</option>
+                    <option value="tianxin_xiaoling">甜心小玲</option>
+                    <option value="wumei_yujie">妩媚御姐</option>
+                    <option value="clever_boy">聪明男童</option>
+                    <option value="cute_boy">可爱男童</option>
+                    <option value="lovely_girl">萌萌女童</option>
+                </optgroup>
+                <optgroup label="英文音色">
+                    <option value="English_expressive_narrator">英文 Narrator</option>
+                    <option value="Sweet_Girl">Sweet Girl</option>
+                    <option value="Charming_Santa">Charming Santa</option>
+                </optgroup>
             </select>
-            <div class="voice-info">当前支持中文、英文、日文、韩文等多种音色</div>
+            <div class="voice-info">当前支持中文、英文、日文、韩文等多种音色（精选音色音质更佳）</div>
         </div>
 
         <div class="form-group">
